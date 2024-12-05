@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -8,6 +9,17 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+class accessDto {
+  @IsEnum(['admins', 'managers'], {
+    message: 'Valid groups required',
+  })
+  groups: string;
+
+  @IsEnum(['admin', 'editor'], {
+    message: 'Valid roles required',
+  })
+  roles: string;
+}
 export class CreateRequestFormDto {
   @IsString()
   @IsNotEmpty()
@@ -30,9 +42,9 @@ export class CreateRequestFormDto {
   @Type(() => Object)
   components: Record<string, any>[];
 
-  @IsString()
-  @IsOptional()
-  group: string;
+  @ValidateNested()
+  @Type(() => accessDto)
+  access: accessDto;
 
   @IsString()
   @IsOptional()

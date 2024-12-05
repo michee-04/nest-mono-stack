@@ -7,7 +7,7 @@ export interface IForm {
   slug: string;
   description: string;
   components: Array<Record<string, any>>;
-  group: string;
+  access: any;
   display: string;
   version: number;
 }

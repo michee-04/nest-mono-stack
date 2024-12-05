@@ -26,8 +26,15 @@ const formSchema = createBaseSchema<IFormModel>(
       type: [mongoose.Schema.Types.Mixed],
       default: [],
     },
-    group: {
-      type: String,
+    access: {
+      groups: {
+        type: String,
+        enum: ['admins', 'managers'],
+      },
+      roles: {
+        type: String,
+        enum: ['admin', 'editor'],
+      },
     },
     version: {
       type: Number,
