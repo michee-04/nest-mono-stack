@@ -47,8 +47,8 @@ const workflowSchema = createBaseSchema<IWorkflowModel>(
     },
     status: {
       type: String,
-      enum: ['active', 'inactive'],
-      default: 'inactive',
+      enum: ['draft', 'active', 'archived', 'deprecated'],
+      default: 'draft',
     },
   },
   {

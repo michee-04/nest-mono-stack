@@ -68,7 +68,7 @@ export class CreateRequestWorkflowDto {
   tags: string;
 
   @IsString()
-  @IsEnum(["active", "inactive"], {
+  @IsEnum(["draft", "active", "archived", "deprecated"], {
     message: 'Valid status required'
   })
   status: string;
