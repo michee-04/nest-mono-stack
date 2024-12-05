@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { HomeModule } from './features/home/home.module';
-import { ViewService } from './infrastructure/view/view.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppConfig, ViewConfig } from './config';
+import { HomeModule } from './features/home/home.module';
 import { PostsModule } from './features/posts/posts.module';
+import { FormModule } from './form/form.module';
+import { ViewService } from './infrastructure/view/view.service';
+import { WorkflowModule } from './workflow/workflow.module';
 
 @Module({
   imports: [
@@ -11,8 +14,19 @@ import { PostsModule } from './features/posts/posts.module';
       isGlobal: true,
       load: [AppConfig, ViewConfig],
     }),
+
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get('app.mongoUri'),
+      }),
+      inject: [ConfigService],
+    }),
+
     HomeModule,
     PostsModule,
+    FormModule,
+    WorkflowModule,
   ],
   providers: [ViewService],
 })
