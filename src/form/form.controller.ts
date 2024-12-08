@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import {
   Body,
@@ -6,21 +5,20 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
   Response,
   ValidationPipe,
 } from '@nestjs/common';
-import { SuccessResponseType } from '@nodesandbox/repo-framework/dist/handlers';
-import { ApiResponse } from '@nodesandbox/response-kit';
-import { IFormModel } from './domain';
+import { ApiResponse } from '@nodesandbox/repo-framework/dist/handlers';
 import { CreateRequestFormDto } from './dto';
 import { FormService } from './form.service';
 
 @Controller('form')
 export class FormController {
-  constructor(private readonly formService: FormService) {}
+  constructor(private readonly formService: FormService) { }
 
   @Post()
   async createForm(
@@ -30,21 +28,17 @@ export class FormController {
     try {
       const response = (await this.formService.create(
         createRequestFormDto,
-      )) as SuccessResponseType<IFormModel>;
+      ));
 
-      // if (!response.success) {
-      //   throw response.error;
-      // }
-      ApiResponse.success(res, response, 201);
+      if (!response.success) {
+        throw response.error;
+      }
+      ApiResponse.success(res, {...response,message:"Félicitation, votre formulaire a bien été créé !"}, 201);
     } catch (error) {
       ApiResponse.error(res, {
         success: false,
         error: error,
       });
-      // ApiResponse.error(res, {
-      //   success: false,
-      //   error: error,
-      // } as ErrorResponseType);
     }
   }
 
@@ -56,31 +50,36 @@ export class FormController {
     @Query('search') search?: string,
     @Query('sortBy') sortBy?: string,
   ) {
-    const filters = {
-      page,
-      limit,
-      searchTerm: search,
-      sort: sortBy,
-    } as any;
-    const response = (await this.formService.findAll(
-      filters,
-    )) as SuccessResponseType<IFormModel>;
+    try {
+      const filters = {
+        page,
+        limit,
+        searchTerm: search,
+        sort: sortBy,
+      } as any;
+      const response = await this.formService.findAll(filters);
 
-    // if (!response.success) {
-    //   throw response.error;
-    // }
+      if (!response.success) {
+        throw response.error;
+      }
 
-    ApiResponse.success(res, response, 201);
+      ApiResponse.success(res, response);
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 
   @Get(':id')
   async getFormById(@Param('id') id: string, @Response() res) {
     try {
-      const response = (await this.formService.findOne({
-        _id: id,
-      })) as SuccessResponseType<IFormModel>;
-
-      ApiResponse.success(res, response, 200);
+      const response = await this.formService.findById(id);
+      if(!response.success) {
+        throw response.error;
+      }
+      ApiResponse.success(res, response);
     } catch (error) {
       ApiResponse.error(res, {
         success: false,
@@ -90,45 +89,57 @@ export class FormController {
   }
 
   @Put(':id')
-  async updateFprm(@Param('id') id: string, @Body() body, @Response() res) {
-    const response = (await this.formService.update(
-      {
-        _id: id,
-      },
-      body,
-    )) as SuccessResponseType<IFormModel>;
+  async updateForm(@Param('id') id: string, @Body() body, @Response() res) {
+    try {
+      const response = await this.formService.updateById(id, body);
 
-    // if (!response.success) {
-    //   throw response.error;
-    // }
+      if (!response.success) {
+        throw response.error;
+      }
 
-    ApiResponse.success(res, response, 201);
+      ApiResponse.success(res, response, 202);
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 
   @Delete(':id')
-  async deleteForm(@Param('id') id: string) {
-    const response = (await this.formService.delete({
-      _id: id,
-    })) as SuccessResponseType<IFormModel>;
+  async deleteForm(@Response() res, @Param('id') id: string) {
+    try {
+      const response = await this.formService.deleteById(id);
 
-    // if (!response.success) {
-    //   throw response.error;
-    // }
+      if (!response.success) {
+        throw response.error;
+      }
 
-    return { success: true, message: 'Formulaire supprimer avec succes' };
+      ApiResponse.success(res, {...response,message:"Votre formulaire a bien été supprimée !"}, 202);
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 
   // TODO modification du package repo-frameworkpour corriger la methode restoreById
-  @Post(':id/restore')
+  @Patch(':id/restore')
   async restore(@Param('id') id: string, @Response() res) {
-    const result = (await this.formService.restoreById(
-      id,
-    )) as SuccessResponseType<IFormModel>;
+    try {
+      const result = await this.formService.restoreById(id);
 
-    // if (!result.success) {
-    //   throw result.error;
-    // }
+      if (!result.success) {
+        throw result.error;
+      }
 
-    ApiResponse.success(res, result, 201);
+      ApiResponse.success(res, result, 201);
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 }
