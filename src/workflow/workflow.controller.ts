@@ -5,15 +5,14 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
   Response,
   ValidationPipe,
 } from '@nestjs/common';
-import { SuccessResponseType } from '@nodesandbox/repo-framework/dist/handlers';
-import { ApiResponse } from '@nodesandbox/response-kit';
-import { IWorkflowModel } from './domain';
+import { ApiResponse } from '@nodesandbox/repo-framework/dist/handlers';
 import { CreateRequestWorkflowDto } from './dto';
 import { WorkflowService } from './workflow.service';
 
@@ -30,7 +29,7 @@ export class WorkflowController {
       const response = await this.workflowService.create(createRequestWorkflow);
 
       if (!response.success) {
-        throw response.;
+        throw response.error;
       }
 
       ApiResponse.success(res, response, 201);
@@ -58,23 +57,27 @@ export class WorkflowController {
     } as any;
     const response = (await this.workflowService.findAll(
       filters,
-    )) as SuccessResponseType<IWorkflowModel>;
+    ));
 
-    // if (!response.success) {
-    //   throw response.error;
-    // }
+    if (!response.success) {
+      throw response.error;
+    }
 
-    ApiResponse.success(res, response, 201);
+    ApiResponse.success(res, response, 202);
   }
 
   @Get(':id')
-  async getFormById(@Param('id') id: string, @Response() res) {
+  async getWorkflowById(@Param('id') id: string, @Response() res) {
     try {
       const response = (await this.workflowService.findOne({
         _id: id,
-      })) as SuccessResponseType<IWorkflowModel>;
+      }));
 
-      ApiResponse.success(res, response, 200);
+      if(!response.success) {
+        throw response.error;
+      }
+
+      ApiResponse.success(res, response);
     } catch (error) {
       ApiResponse.error(res, {
         success: false,
@@ -85,44 +88,67 @@ export class WorkflowController {
 
   @Put(':id')
   async updateFprm(@Param('id') id: string, @Body() body, @Response() res) {
-    const response = (await this.workflowService.update(
-      {
-        _id: id,
-      },
-      body,
-    )) as SuccessResponseType<IWorkflowModel>;
+    try {
 
-    // if (!response.success) {
-    //   throw response.error;
-    // }
+      const response = (await this.workflowService.update(
+        {
+          _id: id,
+        },
+        body,
+      ));
 
-    ApiResponse.success(res, response, 201);
+      if (!response.success) {
+        throw response.error;
+      }
+
+      ApiResponse.success(res, response, 202);
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 
   @Delete(':id')
-  async deleteForm(@Param('id') id: string) {
-    const response = (await this.workflowService.delete({
-      _id: id,
-    })) as SuccessResponseType<IWorkflowModel>;
+  async deleteForm(@Response() res ,@Param('id') id: string) {
+    try {
 
-    // if (!response.success) {
-    //   throw response.error;
-    // }
+      const response = await this.workflowService.delete({
+        _id: id,
+      });
 
-    return { success: true, message: 'Formulaire supprimer avec succes' };
+      if (!response.success) {
+        throw response.error;
+      }
+
+      ApiResponse.success(res, {...response,message:"Votre workflow a bien été supprimée !"}, 202)
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 
   // TODO modification du package repo-frameworkpour corriger la methode restoreById
-  @Post(':id/restore')
+  @Patch(':id/restore')
   async restore(@Param('id') id: string, @Response() res) {
-    const result = (await this.workflowService.restoreById(
-      id,
-    )) as SuccessResponseType<IWorkflowModel>;
+    try {
+      const result = (await this.workflowService.restoreById(
+        id,
+      ));
 
-    // if (!result.success) {
-    //   throw result.error;
-    // }
+      if (!result.success) {
+        throw result.error;
+      }
 
-    ApiResponse.success(res, result, 201);
+      ApiResponse.success(res, result, 201);
+    } catch (error) {
+      ApiResponse.error(res, {
+        success: false,
+        error: error,
+      });
+    }
   }
 }

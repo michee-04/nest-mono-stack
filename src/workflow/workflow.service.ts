@@ -15,6 +15,21 @@ export class WorkflowService extends BaseService<
     private readonly workflowModel: Model<IWorkflowModel>,
   ) {
     const workflowRepo = new WorkflowRepository(workflowModel);
-    super(workflowRepo);
+    super(workflowRepo, {
+      filter: {
+        allowedFields: ['group', 'version'],
+        defaultSort: { createdAt: -1 },
+      },
+      search: {
+        enabled: true,
+        fields: ['title', 'label'],
+        caseSensitive: false,
+        fuzzySearch: true,
+      },
+      populate: {
+        fields: [],
+        defaultPopulate: false,
+      },
+    });
   }
 }

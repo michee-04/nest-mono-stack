@@ -9,6 +9,7 @@ const formSchema = createBaseSchema<IFormModel>(
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     label: {
       type: String,
@@ -16,7 +17,9 @@ const formSchema = createBaseSchema<IFormModel>(
     },
     slug: {
       type: String,
-      required: true,
+    },
+    slugger: {
+      type: String,
     },
     description: {
       type: String,
@@ -32,6 +35,11 @@ const formSchema = createBaseSchema<IFormModel>(
     version: {
       type: Number,
       required: true,
+    },
+    subForm: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: FORM_MODEL_NAME,
+      required: false,
     },
   },
   {

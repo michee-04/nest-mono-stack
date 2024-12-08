@@ -1,7 +1,6 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -17,9 +16,9 @@ export class CreateRequestFormDto {
   @IsNotEmpty()
   label: string;
 
-  @IsString()
-  @IsNotEmpty()
-  slug: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // slug: string;
 
   @IsString()
   @IsOptional()
@@ -37,8 +36,4 @@ export class CreateRequestFormDto {
   @IsString()
   @IsOptional()
   display: string;
-
-  @IsInt()
-  @IsNotEmpty()
-  version: number;
 }
