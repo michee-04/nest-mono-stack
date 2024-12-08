@@ -9,6 +9,7 @@ const formSchema = createBaseSchema<IFormModel>(
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     label: {
       type: String,
@@ -16,7 +17,9 @@ const formSchema = createBaseSchema<IFormModel>(
     },
     slug: {
       type: String,
-      required: true,
+    },
+    slugger: {
+      type: String,
     },
     description: {
       type: String,
