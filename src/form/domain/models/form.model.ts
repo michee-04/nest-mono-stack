@@ -36,6 +36,11 @@ const formSchema = createBaseSchema<IFormModel>(
       type: Number,
       required: true,
     },
+    subForm: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: FORM_MODEL_NAME,
+      required: false,
+    },
   },
   {
     modelName: FORM_MODEL_NAME,

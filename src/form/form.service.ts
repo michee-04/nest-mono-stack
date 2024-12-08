@@ -28,8 +28,8 @@ export class FormService extends BaseService<IFormModel, FormRepository> {
         fuzzySearch: false,
       },
       populate: {
-        fields: [],
-        defaultPopulate: false,
+        fields: [{ path: 'subForm', select: '_id title description' }],
+        defaultPopulate: true,
       },
     });
   }
