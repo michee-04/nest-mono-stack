@@ -11,11 +11,8 @@ import {
   Response,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ApiResponse,
-  ErrorResponseType,
-  SuccessResponseType,
-} from '@nodesandbox/response-kit';
+import { SuccessResponseType } from '@nodesandbox/repo-framework/dist/handlers';
+import { ApiResponse } from '@nodesandbox/response-kit';
 import { IWorkflowModel } from './domain';
 import { CreateRequestWorkflowDto } from './dto';
 import { WorkflowService } from './workflow.service';
@@ -30,12 +27,10 @@ export class WorkflowController {
     @Response() res,
   ) {
     try {
-      const response = (await this.workflowService.create(
-        createRequestWorkflow,
-      )) as SuccessResponseType<any>;
+      const response = await this.workflowService.create(createRequestWorkflow);
 
       if (!response.success) {
-        throw response.error;
+        throw response.;
       }
 
       ApiResponse.success(res, response, 201);
@@ -43,7 +38,7 @@ export class WorkflowController {
       ApiResponse.error(res, {
         success: false,
         error: error,
-      } as ErrorResponseType);
+      });
     }
   }
 
@@ -65,9 +60,9 @@ export class WorkflowController {
       filters,
     )) as SuccessResponseType<IWorkflowModel>;
 
-    if (!response.success) {
-      throw response.error;
-    }
+    // if (!response.success) {
+    //   throw response.error;
+    // }
 
     ApiResponse.success(res, response, 201);
   }
@@ -84,7 +79,7 @@ export class WorkflowController {
       ApiResponse.error(res, {
         success: false,
         error: error,
-      } as ErrorResponseType);
+      });
     }
   }
 
@@ -97,9 +92,9 @@ export class WorkflowController {
       body,
     )) as SuccessResponseType<IWorkflowModel>;
 
-    if (!response.success) {
-      throw response.error;
-    }
+    // if (!response.success) {
+    //   throw response.error;
+    // }
 
     ApiResponse.success(res, response, 201);
   }
@@ -110,9 +105,9 @@ export class WorkflowController {
       _id: id,
     })) as SuccessResponseType<IWorkflowModel>;
 
-    if (!response.success) {
-      throw response.error;
-    }
+    // if (!response.success) {
+    //   throw response.error;
+    // }
 
     return { success: true, message: 'Formulaire supprimer avec succes' };
   }
@@ -124,9 +119,9 @@ export class WorkflowController {
       id,
     )) as SuccessResponseType<IWorkflowModel>;
 
-    if (!result.success) {
-      throw result.error;
-    }
+    // if (!result.success) {
+    //   throw result.error;
+    // }
 
     ApiResponse.success(res, result, 201);
   }

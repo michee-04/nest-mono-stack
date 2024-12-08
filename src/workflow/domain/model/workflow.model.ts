@@ -1,4 +1,5 @@
 import { BaseModel, createBaseSchema } from '@nodesandbox/repo-framework';
+import mongoose from 'mongoose';
 import { IWorkflowModel } from '../types';
 
 export const WORKFLOW_MODEL_NAME = 'Workflow';
@@ -24,6 +25,10 @@ const workflowSchema = createBaseSchema<IWorkflowModel>(
     schemas: {
       xml: { type: String },
       json: { type: String },
+    },
+    form: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Form',
     },
     access: {
       groups: {

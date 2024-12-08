@@ -1,21 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    Put,
-    Query,
-    Response,
-    ValidationPipe,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Response,
+  ValidationPipe,
 } from '@nestjs/common';
-import {
-    ApiResponse,
-    ErrorResponseType,
-    SuccessResponseType,
-} from '@nodesandbox/response-kit';
+import { SuccessResponseType } from '@nodesandbox/repo-framework/dist/handlers';
+import { ApiResponse } from '@nodesandbox/response-kit';
 import { IFormModel } from './domain';
 import { CreateRequestFormDto } from './dto';
 import { FormService } from './form.service';
@@ -34,15 +32,19 @@ export class FormController {
         createRequestFormDto,
       )) as SuccessResponseType<IFormModel>;
 
-      if (!response.success) {
-        throw response.error;
-      }
+      // if (!response.success) {
+      //   throw response.error;
+      // }
       ApiResponse.success(res, response, 201);
     } catch (error) {
       ApiResponse.error(res, {
         success: false,
         error: error,
-      } as ErrorResponseType);
+      });
+      // ApiResponse.error(res, {
+      //   success: false,
+      //   error: error,
+      // } as ErrorResponseType);
     }
   }
 
@@ -64,9 +66,9 @@ export class FormController {
       filters,
     )) as SuccessResponseType<IFormModel>;
 
-    if (!response.success) {
-      throw response.error;
-    }
+    // if (!response.success) {
+    //   throw response.error;
+    // }
 
     ApiResponse.success(res, response, 201);
   }
@@ -83,7 +85,7 @@ export class FormController {
       ApiResponse.error(res, {
         success: false,
         error: error,
-      } as ErrorResponseType);
+      });
     }
   }
 
@@ -96,9 +98,9 @@ export class FormController {
       body,
     )) as SuccessResponseType<IFormModel>;
 
-    if (!response.success) {
-      throw response.error;
-    }
+    // if (!response.success) {
+    //   throw response.error;
+    // }
 
     ApiResponse.success(res, response, 201);
   }
@@ -109,9 +111,9 @@ export class FormController {
       _id: id,
     })) as SuccessResponseType<IFormModel>;
 
-    if (!response.success) {
-      throw response.error;
-    }
+    // if (!response.success) {
+    //   throw response.error;
+    // }
 
     return { success: true, message: 'Formulaire supprimer avec succes' };
   }
@@ -123,9 +125,9 @@ export class FormController {
       id,
     )) as SuccessResponseType<IFormModel>;
 
-    if (!result.success) {
-      throw result.error;
-    }
+    // if (!result.success) {
+    //   throw result.error;
+    // }
 
     ApiResponse.success(res, result, 201);
   }
