@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import { Logger } from '@nestjs/common';
 import {
   registerDecorator,
   ValidationOptions,
@@ -10,7 +9,7 @@ import * as libxmljs from 'libxmljs';
 
 
 @ValidatorConstraint({ async: false })
-class IsXmlStringConstraint implements ValidatorConstraintInterface {
+export class IsXmlStringConstraint implements ValidatorConstraintInterface {
   validate(value: string): boolean {
     if (typeof value !== 'string') return false;
 
@@ -18,7 +17,6 @@ class IsXmlStringConstraint implements ValidatorConstraintInterface {
       libxmljs.parseXml(value);
       return true;
     } catch (error) {
-        Logger.error('❌❌❌ XML invalide', error)
       return false;
     }
   }

@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
-class IsJsonStringConstraint implements ValidatorConstraintInterface {
+export class IsJsonStringConstraint implements ValidatorConstraintInterface {
   validate(value: string): boolean {
     if (typeof value !== 'string') return false;
     try {
