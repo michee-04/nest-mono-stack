@@ -25,7 +25,7 @@ export const createWorkflowRequestDto: Joi.ObjectSchema = Joi.object({
       .custom((value, helpers) => {
         if (!IsXmlValidator.validate(value)) {
           return helpers.error('any.invalid', {
-            message: isJsonValidator.defaultMessage(),
+            message: IsXmlValidator.defaultMessage(),
           });
         }
 
