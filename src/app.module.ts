@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppConfig, ViewConfig } from './config';
+import { FormModule } from './features/form/form.module';
 import { HomeModule } from './features/home/home.module';
 import { PostsModule } from './features/posts/posts.module';
-import { FormModule } from './form/form.module';
+import { UserModule } from './features/user/user.module';
+import { WorkflowModule } from './features/workflow/workflow.module';
 import { ViewService } from './infrastructure/view/view.service';
-import { WorkflowModule } from './workflow/workflow.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { WorkflowModule } from './workflow/workflow.module';
     PostsModule,
     FormModule,
     WorkflowModule,
+    UserModule,
   ],
   providers: [ViewService],
 })
