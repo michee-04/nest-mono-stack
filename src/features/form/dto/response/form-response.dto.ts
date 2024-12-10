@@ -5,4 +5,4 @@ export const CreateFormResponseDto: Joi.ObjectSchema = Joi.object({
   label: Joi.string().required(),
   description: Joi.string(),
   components: Joi.array(),
-}).unknown(false);
+});
