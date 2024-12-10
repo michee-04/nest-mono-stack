@@ -1,14 +1,8 @@
-import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsString } from 'class-validator';
+import * as Joi from 'joi';
 
-export class formResponseDto {
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  title: string;
-
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  label: string;
-}
+export const CreateFormResponseDto: Joi.ObjectSchema = Joi.object({
+  title: Joi.string().min(3).required(),
+  label: Joi.string().required(),
+  description: Joi.string(),
+  components: Joi.array(),
+}).unknown(false);
