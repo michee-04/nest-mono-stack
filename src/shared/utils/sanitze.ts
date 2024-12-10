@@ -9,7 +9,8 @@ export const sanitize = <T>(
   data: Record<string, any>,
   schema: ObjectSchema<T>,
 ): { success: boolean; data?: T; error?: ErrorResponse } => {
-  // console.log('❎❎❎❎ data', data);
+  // console.log('⚔️⚔️⚔️⚔️⚔️ data', data);
+  // console.log('🕯️🕯️🕯️🕯️🕯️ schema', schema);
 
   const { error, value } = schema.validate(data, {
     abortEarly: false,
@@ -19,8 +20,7 @@ export const sanitize = <T>(
     error: ValidationError | undefined;
     value: Partial<T>;
   };
-  console.log('error sanitize', error);
-  console.log('value sanitize', value);
+  // console.log('value sanitize ✔️✔️✔️✔️', value);
   if (error) {
     const message = error.details.map((i) => i.message).join(', ');
     console.log('----->', sanitize);
@@ -28,6 +28,7 @@ export const sanitize = <T>(
       'Check the format of the submitted data',
       'Ensure all required fields are present',
     ];
+    // console.log('error sanitize ❌❌❌❌', error);
 
     return {
       success: false,
