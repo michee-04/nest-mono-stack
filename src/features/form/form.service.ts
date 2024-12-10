@@ -19,7 +19,7 @@ export class FormService extends BaseService<IFormModel, FormRepository> {
       slug: {
         enabled: true,
         sourceField: 'title',
-        targetField: 'slugger', // target field name...this will be used to create the slug and put in the slugger field of the document
+        targetField: 'slugger',
       },
       search: {
         enabled: true,

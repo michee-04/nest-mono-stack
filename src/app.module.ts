@@ -5,6 +5,7 @@ import { AppConfig, ViewConfig } from './config';
 import { FormModule } from './features/form/form.module';
 import { HomeModule } from './features/home/home.module';
 import { PostsModule } from './features/posts/posts.module';
+import { ServiceModule } from './features/service/service.module';
 import { UserModule } from './features/user/user.module';
 import { WorkflowModule } from './features/workflow/workflow.module';
 import { ViewService } from './infrastructure/view/view.service';
@@ -29,6 +30,7 @@ import { ViewService } from './infrastructure/view/view.service';
     FormModule,
     WorkflowModule,
     UserModule,
+    ServiceModule,
   ],
   providers: [ViewService],
 })
