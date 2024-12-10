@@ -14,7 +14,8 @@ import {
   Response,
 } from '@nestjs/common';
 import { ApiResponse } from '@nodesandbox/repo-framework/dist/handlers';
-import { sanitize } from 'src/shared/utils/sanitze';
+import { extractResponseData, sanitize } from 'src/shared/utils';
+import { CreateFormResponseDto } from './dto';
 import { FormService } from './form.service';
 
 @Controller('form')
@@ -40,7 +41,16 @@ export class FormController {
         throw response.error;
       }
 
-      ApiResponse.success(res, {...response,message:"Félicitation, votre formulaire a bien été créé !"}, 201);
+    const responseData = await sanitize(
+      extractResponseData(CreateFormResponseDto, response.data.docs),
+      CreateFormResponseDto
+    );
+
+      if (!responseData.success) {
+        throw responseData.error
+      }
+
+      ApiResponse.success(res, {...responseData,message:"Félicitation, votre formulaire a bien été créé !"}, 201);
     } catch (error) {
       ApiResponse.error(res, {
         success: false,
