@@ -22,7 +22,7 @@ export class WorkflowController {
   constructor(private readonly workflowService: WorkflowService) {}
 
   @Post()
-  async createProcess(
+  async createWorkflow(
     @Request() req,
     @Response() res,
   ) {
@@ -48,7 +48,7 @@ export class WorkflowController {
   }
 
   @Get()
-  async getForm(
+  async getWorkflow(
     @Response() res,
     @Query('page') page?: number,
     @Query('limit') limit?: number,
@@ -93,7 +93,7 @@ export class WorkflowController {
   }
 
   @Put(':id')
-  async updateFprm(@Param('id') id: string, @Body() body, @Response() res) {
+  async updateWorkflow(@Param('id') id: string, @Body() body, @Response() res) {
     try {
 
       const response = (await this.workflowService.update(
@@ -117,7 +117,7 @@ export class WorkflowController {
   }
 
   @Delete(':id')
-  async deleteForm(@Response() res ,@Param('id') id: string) {
+  async deleteWorkflow(@Response() res ,@Param('id') id: string) {
     try {
 
       const response = await this.workflowService.delete({
